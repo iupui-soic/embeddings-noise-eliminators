@@ -19,3 +19,14 @@ models/
 *.swp
 .vscode/
 .env
+
+# venv + v4 work outputs
+.venv/
+v4_work/
+
+# Manuscript sources never ship with the repo
+manuscript/
+v4/manuscript_v*.md
+v4/manuscript_v*.docx
+v4/fill_placeholders.py
+v4/README.md
