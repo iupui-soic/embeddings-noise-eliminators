@@ -10,7 +10,7 @@ Checks for silent failures beyond the clip bug:
 import os, sys
 os.environ["DATASET"] = "nih"
 os.environ["CUDA_VISIBLE_DEVICES"] = ""
-sys.path.insert(0, "/home/saptpurk/embeddings-noise-eliminators/v4")
+sys.path.insert(0, "/home/saptpurk/embeddings-noise-eliminators")
 
 import numpy as np
 from common import (

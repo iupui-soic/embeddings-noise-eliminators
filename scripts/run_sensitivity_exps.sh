@@ -23,13 +23,12 @@ source .venv/bin/activate
 : "${CUDA_VISIBLE_DEVICES:=0}"
 export CUDA_VISIBLE_DEVICES
 export HF_TOKEN="${HF_TOKEN:?HF_TOKEN must be set in environment (see REPRODUCE.md section 2)}"
-export REPO_ROOT=/home/saptpurk/embeddings-noise-eliminators/v4
-export V4_WORK_DIR=/home/saptpurk/embeddings-noise-eliminators/v4_work
-export MIMIC_SUBSAMPLE_IDS=/home/saptpurk/embeddings-noise-eliminators/manuscript/mimic_subsample_ids.parquet
+export REPO_ROOT=/home/saptpurk/embeddings-noise-eliminators
+export V4_WORK_DIR=/home/saptpurk/embeddings-noise-eliminators/outputs
+export MIMIC_SUBSAMPLE_IDS=/home/saptpurk/embeddings-noise-eliminators/manifests/mimic_subsample_ids.parquet
 export NUM_WORKERS=4
 
-cd v4
-LOG_ROOT=/home/saptpurk/embeddings-noise-eliminators/v4_work
+LOG_ROOT=/home/saptpurk/embeddings-noise-eliminators/outputs
 
 ORDER=(
   "notebooks/11_ClusteredBootstrap.ipynb"

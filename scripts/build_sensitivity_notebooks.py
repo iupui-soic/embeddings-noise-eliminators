@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate exp10-exp18 sensitivity notebooks in v4/notebooks/.
+"""Generate exp10-exp18 sensitivity notebooks in notebooks/.
 
 Each notebook describes the analysis it performs in present tense and
 executes cleanly under `jupyter nbconvert --execute` by guarding optional
@@ -11,7 +11,7 @@ import json
 from pathlib import Path
 from textwrap import dedent
 
-NB_DIR = Path("/home/saptpurk/embeddings-noise-eliminators/v4/notebooks")
+NB_DIR = Path("/home/saptpurk/embeddings-noise-eliminators/notebooks")
 NB_DIR.mkdir(parents=True, exist_ok=True)
 
 
@@ -58,7 +58,7 @@ from pathlib import Path
 import pandas as pd
 
 ROOT = Path(os.environ.get('V4_WORK_DIR',
-    '/home/saptpurk/embeddings-noise-eliminators/v4_work'))
+    '/home/saptpurk/embeddings-noise-eliminators/outputs'))
 DATASET = os.environ.get('DATASET', 'nih')
 MODELS = (os.environ.get('MODELS_TO_RUN',
     'raddino,dinov2,biomedclip,dinov3,medsiglip').split(','))
@@ -130,7 +130,7 @@ import pandas as pd
 from sklearn.metrics import roc_auc_score
 
 ROOT = Path(os.environ.get('V4_WORK_DIR',
-    '/home/saptpurk/embeddings-noise-eliminators/v4_work'))
+    '/home/saptpurk/embeddings-noise-eliminators/outputs'))
 B = int(os.environ.get('BOOT_B', 1000))
 SEED = 42
 rng = np.random.default_rng(SEED)
@@ -207,7 +207,7 @@ import pandas as pd
 from sklearn.metrics import roc_auc_score
 
 ROOT = Path(os.environ.get('V4_WORK_DIR',
-    '/home/saptpurk/embeddings-noise-eliminators/v4_work'))
+    '/home/saptpurk/embeddings-noise-eliminators/outputs'))
 
 def _nih_demographics():
     f = Path('/data0/NIH-CXR14/Data_Entry_2017_v2020.csv')
@@ -280,7 +280,7 @@ from pathlib import Path
 import pandas as pd
 
 ROOT = Path(os.environ.get('V4_WORK_DIR',
-    '/home/saptpurk/embeddings-noise-eliminators/v4_work'))
+    '/home/saptpurk/embeddings-noise-eliminators/outputs'))
 QUALS = [50, 70, 90, 95]
 out_dir = ROOT / 'v4_exp13_jpeg_sensitivity'
 out_dir.mkdir(parents=True, exist_ok=True)
@@ -321,7 +321,7 @@ from pathlib import Path
 import pandas as pd
 
 ROOT = Path(os.environ.get('V4_WORK_DIR',
-    '/home/saptpurk/embeddings-noise-eliminators/v4_work'))
+    '/home/saptpurk/embeddings-noise-eliminators/outputs'))
 SEEDS = [0, 1, 2]
 out_dir = ROOT / 'v4_exp14_multiseed'
 out_dir.mkdir(parents=True, exist_ok=True)
@@ -370,7 +370,7 @@ from pathlib import Path
 import pandas as pd
 
 ROOT = Path(os.environ.get('V4_WORK_DIR',
-    '/home/saptpurk/embeddings-noise-eliminators/v4_work'))
+    '/home/saptpurk/embeddings-noise-eliminators/outputs'))
 out_dir = ROOT / 'v4_exp15_native_resolution'
 out_dir.mkdir(parents=True, exist_ok=True)
 
@@ -412,7 +412,7 @@ from pathlib import Path
 import pandas as pd
 
 ROOT = Path(os.environ.get('V4_WORK_DIR',
-    '/home/saptpurk/embeddings-noise-eliminators/v4_work'))
+    '/home/saptpurk/embeddings-noise-eliminators/outputs'))
 out_dir = ROOT / 'v4_exp16_label_noise'
 out_dir.mkdir(parents=True, exist_ok=True)
 
@@ -459,7 +459,7 @@ import pandas as pd
 from scipy import stats
 
 ROOT = Path(os.environ.get('V4_WORK_DIR',
-    '/home/saptpurk/embeddings-noise-eliminators/v4_work'))
+    '/home/saptpurk/embeddings-noise-eliminators/outputs'))
 out_dir = ROOT / 'v4_exp17_adi_vs_delta'
 out_dir.mkdir(parents=True, exist_ok=True)
 
@@ -543,7 +543,7 @@ from pathlib import Path
 import pandas as pd
 
 ROOT = Path(os.environ.get('V4_WORK_DIR',
-    '/home/saptpurk/embeddings-noise-eliminators/v4_work'))
+    '/home/saptpurk/embeddings-noise-eliminators/outputs'))
 
 FM_SPEC = {
     'raddino':    {'native_res': 518, 'patch': 14, 'grid_native': 518 // 14},

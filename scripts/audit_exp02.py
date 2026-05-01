@@ -13,7 +13,7 @@ Checks:
 """
 import os, sys, hashlib
 os.environ["DATASET"] = "nih"
-sys.path.insert(0, "/home/saptpurk/embeddings-noise-eliminators/v4")
+sys.path.insert(0, "/home/saptpurk/embeddings-noise-eliminators")
 
 import numpy as np
 import cv2

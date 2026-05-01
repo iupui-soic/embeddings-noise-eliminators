@@ -2,7 +2,10 @@
 # Wait for both NIH GPU drivers to finish, merge parquets, dual-GPU MIMIC,
 # merge MIMIC parquets, then sensitivity sweep (exp10-16).
 set -u
-LOG_ROOT=/home/saptpurk/embeddings-noise-eliminators/v4_work
+REPO_ROOT=/home/saptpurk/embeddings-noise-eliminators
+SCRIPTS_DIR="$REPO_ROOT/scripts"
+LOG_ROOT="$REPO_ROOT/outputs"
+mkdir -p "$LOG_ROOT"
 WATCHER_LOG="$LOG_ROOT/chain_watcher.log"
 echo "[$(date -Is)] chain watcher v3 armed (NIH -> MIMIC -> sensitivity)" >> "$WATCHER_LOG"
 
@@ -27,28 +30,28 @@ while ! grep -q "^DONE_EXIT_" "$LOG_ROOT/nih_gpu0_driver.log" 2>/dev/null; do sl
 while ! grep -q "^DONE_EXIT_" "$LOG_ROOT/nih_gpu1_driver.log" 2>/dev/null; do sleep 60; done
 echo "[$(date -Is)] both NIH drivers done" >> "$WATCHER_LOG"
 
-bash "$LOG_ROOT/merge_gpu_parquets.sh" nih >> "$WATCHER_LOG" 2>&1
+bash "$SCRIPTS_DIR/merge_gpu_parquets.sh" nih >> "$WATCHER_LOG" 2>&1
 echo "[$(date -Is)] NIH parquets merged" >> "$WATCHER_LOG"
 
 cleanup_orphan_kernels
 
 tmux kill-session -t mimic-gpu0 2>/dev/null
 tmux kill-session -t mimic-gpu1 2>/dev/null
-tmux new-session -d -s mimic-gpu0 "bash $LOG_ROOT/run_mimic_exps_gpu0.sh > $LOG_ROOT/mimic_gpu0_driver.log 2>&1; echo DONE_EXIT_\$? >> $LOG_ROOT/mimic_gpu0_driver.log"
-tmux new-session -d -s mimic-gpu1 "bash $LOG_ROOT/run_mimic_exps_gpu1.sh > $LOG_ROOT/mimic_gpu1_driver.log 2>&1; echo DONE_EXIT_\$? >> $LOG_ROOT/mimic_gpu1_driver.log"
+tmux new-session -d -s mimic-gpu0 "bash $SCRIPTS_DIR/run_mimic_exps_gpu0.sh > $LOG_ROOT/mimic_gpu0_driver.log 2>&1; echo DONE_EXIT_\$? >> $LOG_ROOT/mimic_gpu0_driver.log"
+tmux new-session -d -s mimic-gpu1 "bash $SCRIPTS_DIR/run_mimic_exps_gpu1.sh > $LOG_ROOT/mimic_gpu1_driver.log 2>&1; echo DONE_EXIT_\$? >> $LOG_ROOT/mimic_gpu1_driver.log"
 echo "[$(date -Is)] MIMIC dual-GPU sessions launched" >> "$WATCHER_LOG"
 
 while ! grep -q "^DONE_EXIT_" "$LOG_ROOT/mimic_gpu0_driver.log" 2>/dev/null; do sleep 120; done
 while ! grep -q "^DONE_EXIT_" "$LOG_ROOT/mimic_gpu1_driver.log" 2>/dev/null; do sleep 120; done
 echo "[$(date -Is)] both MIMIC drivers done" >> "$WATCHER_LOG"
 
-bash "$LOG_ROOT/merge_gpu_parquets.sh" mimic >> "$WATCHER_LOG" 2>&1
+bash "$SCRIPTS_DIR/merge_gpu_parquets.sh" mimic >> "$WATCHER_LOG" 2>&1
 echo "[$(date -Is)] MIMIC parquets merged" >> "$WATCHER_LOG"
 
 cleanup_orphan_kernels
 
 tmux kill-session -t sensitivity 2>/dev/null
-tmux new-session -d -s sensitivity "bash $LOG_ROOT/run_sensitivity_exps.sh > $LOG_ROOT/sensitivity_driver.log 2>&1; echo DONE_EXIT_\$? >> $LOG_ROOT/sensitivity_driver.log"
+tmux new-session -d -s sensitivity "bash $SCRIPTS_DIR/run_sensitivity_exps.sh > $LOG_ROOT/sensitivity_driver.log 2>&1; echo DONE_EXIT_\$? >> $LOG_ROOT/sensitivity_driver.log"
 echo "[$(date -Is)] sensitivity sweep launched" >> "$WATCHER_LOG"
 
 while ! grep -q "^DONE_EXIT_" "$LOG_ROOT/sensitivity_driver.log" 2>/dev/null; do sleep 120; done

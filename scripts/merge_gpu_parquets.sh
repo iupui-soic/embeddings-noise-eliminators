@@ -3,7 +3,7 @@
 # the canonical filenames fill_placeholders.py expects.
 set -eu
 DS="${1:-nih}"
-WORK="/home/saptpurk/embeddings-noise-eliminators/v4_work"
+WORK="/home/saptpurk/embeddings-noise-eliminators/outputs"
 source /home/saptpurk/embeddings-noise-eliminators/.venv/bin/activate
 
 python3 - <<PY

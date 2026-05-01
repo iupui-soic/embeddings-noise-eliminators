@@ -32,7 +32,7 @@ SEED = 42
 TARGET_N_TRAIN = 50_000
 MIMIC_ROOT = Path("/data0/MIMIC-CXR")
 OUT_PATH = Path(
-    "/home/saptpurk/embeddings-noise-eliminators/v4_work/mimic_subsample_ids.parquet"
+    "/home/saptpurk/embeddings-noise-eliminators/manifests/mimic_subsample_ids.parquet"
 )
 
 

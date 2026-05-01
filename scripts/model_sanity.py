@@ -11,7 +11,7 @@ Catches silent preprocessor / embedding-head / grid bugs before burning GPU hour
 """
 import os, sys, time
 os.environ["DATASET"] = "nih"
-sys.path.insert(0, "/home/saptpurk/embeddings-noise-eliminators/v4")
+sys.path.insert(0, "/home/saptpurk/embeddings-noise-eliminators")
 
 import numpy as np
 from common import (

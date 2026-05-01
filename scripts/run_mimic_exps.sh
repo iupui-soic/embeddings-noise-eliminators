@@ -9,11 +9,10 @@ source .venv/bin/activate
 export DATASET=mimic
 export HF_TOKEN="${HF_TOKEN:?HF_TOKEN must be set in environment (see REPRODUCE.md section 2)}"
 export MODELS_TO_RUN=raddino,dinov2,biomedclip,dinov3,medsiglip
-export REPO_ROOT=/home/saptpurk/embeddings-noise-eliminators/v4
-export V4_WORK_DIR=/home/saptpurk/embeddings-noise-eliminators/v4_work
+export REPO_ROOT=/home/saptpurk/embeddings-noise-eliminators
+export V4_WORK_DIR=/home/saptpurk/embeddings-noise-eliminators/outputs
 
-cd v4
-LOG_ROOT=/home/saptpurk/embeddings-noise-eliminators/v4_work
+LOG_ROOT=/home/saptpurk/embeddings-noise-eliminators/outputs
 
 ORDER=(
   "notebooks/01_DiseaseClassification.ipynb"

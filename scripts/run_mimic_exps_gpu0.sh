@@ -7,17 +7,16 @@ export CUDA_VISIBLE_DEVICES=0
 export DATASET=mimic
 export HF_TOKEN="${HF_TOKEN:?HF_TOKEN must be set in environment (see REPRODUCE.md section 2)}"
 export MODELS_TO_RUN=raddino,dinov2,biomedclip
-export REPO_ROOT=/home/saptpurk/embeddings-noise-eliminators/v4
-export V4_WORK_DIR=/home/saptpurk/embeddings-noise-eliminators/v4_work
+export REPO_ROOT=/home/saptpurk/embeddings-noise-eliminators
+export V4_WORK_DIR=/home/saptpurk/embeddings-noise-eliminators/outputs
 export RUN_TAG=gpu0
 export NUM_WORKERS=4
 # Pre-registered MIMIC-CXR subsample manifest (see build_mimic_subsample.py).
 # Evaluation uses full official test+validate splits; probe-training is
 # stratified random subsample of the official train split (seed=42, n=50k).
-export MIMIC_SUBSAMPLE_IDS=/home/saptpurk/embeddings-noise-eliminators/manuscript/mimic_subsample_ids.parquet
+export MIMIC_SUBSAMPLE_IDS=/home/saptpurk/embeddings-noise-eliminators/manifests/mimic_subsample_ids.parquet
 
-cd v4
-LOG_ROOT=/home/saptpurk/embeddings-noise-eliminators/v4_work
+LOG_ROOT=/home/saptpurk/embeddings-noise-eliminators/outputs
 ORDER=(
   "notebooks/01_DiseaseClassification.ipynb"
   "notebooks/02_SyntheticGeometric.ipynb"

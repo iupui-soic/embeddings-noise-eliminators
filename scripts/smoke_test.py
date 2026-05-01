@@ -8,7 +8,7 @@ import os, sys, time
 os.environ["DATASET"] = "nih"
 
 REPO_ROOT = "/home/saptpurk/embeddings-noise-eliminators"
-sys.path.insert(0, os.path.join(REPO_ROOT, "v4"))
+sys.path.insert(0, REPO_ROOT)
 
 import numpy as np
 import pandas as pd

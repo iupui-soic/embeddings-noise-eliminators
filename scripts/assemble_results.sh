@@ -8,8 +8,8 @@
 # Dataset must be passed as $1 (nih|mimic|emory).
 set -eu
 DS="${1:-nih}"
-WORK="/home/saptpurk/embeddings-noise-eliminators/v4_work"
-OUT="/home/saptpurk/embeddings-noise-eliminators/v4_work/results/${DS}"
+WORK="/home/saptpurk/embeddings-noise-eliminators/outputs"
+OUT="/home/saptpurk/embeddings-noise-eliminators/outputs/results/${DS}"
 
 mkdir -p "$OUT"
 
