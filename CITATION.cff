@@ -1,0 +1,94 @@
+cff-version: 1.2.0
+title: >-
+  Foundation Model Embeddings Discard Small-Scale Signal in Chest
+  Radiography: A Mechanistic Analysis with Implications for
+  Small-Lesion Detection and Pre-Deployment Audit
+message: >-
+  If you use this software, please cite both the article and this
+  repository.
+type: software
+authors:
+  - given-names: Raajitha
+    family-names: Muthyala
+    affiliation: >-
+      Department of Biomedical Engineering and Informatics,
+      Indiana University, Indianapolis, IN, USA
+  - given-names: Zhenan
+    family-names: Yin
+    affiliation: >-
+      Department of Biomedical Engineering and Informatics,
+      Indiana University, Indianapolis, IN, USA
+  - given-names: Alekhya
+    family-names: Jilla
+    affiliation: >-
+      Department of Biomedical Engineering and Informatics,
+      Indiana University, Indianapolis, IN, USA
+  - given-names: Frank
+    family-names: Li
+    affiliation: >-
+      Department of Radiology and Imaging Sciences,
+      Emory University, Atlanta, GA, USA
+  - given-names: Theo
+    family-names: Dapamede
+    affiliation: >-
+      Department of Radiology and Imaging Sciences,
+      Emory University, Atlanta, GA, USA
+  - given-names: Bardia
+    family-names: Khosravi
+    affiliation: >-
+      Department of Radiology and Imaging Sciences,
+      Emory University, Atlanta, GA, USA
+  - given-names: Mohammadreza
+    family-names: Chavoshi
+    affiliation: >-
+      Department of Radiology and Imaging Sciences,
+      Emory University, Atlanta, GA, USA
+  - given-names: Judy
+    family-names: Gichoya
+    affiliation: >-
+      Department of Radiology and Imaging Sciences,
+      Emory University, Atlanta, GA, USA
+  - given-names: Saptarshi
+    family-names: Purkayastha
+    email: saptpurk@iu.edu
+    affiliation: >-
+      Department of Biomedical Engineering and Informatics,
+      Indiana University, Indianapolis, IN, USA
+repository-code: 'https://github.com/iupui-soic/embeddings-noise-eliminators'
+license: Apache-2.0
+keywords:
+  - foundation models
+  - vision transformers
+  - chest radiography
+  - small-lesion detection
+  - embedding probing
+  - patch-token pooling
+  - pre-deployment audit
+preferred-citation:
+  type: article
+  title: >-
+    Foundation Model Embeddings Discard Small-Scale Signal in Chest
+    Radiography: A Mechanistic Analysis with Implications for
+    Small-Lesion Detection and Pre-Deployment Audit
+  authors:
+    - given-names: Raajitha
+      family-names: Muthyala
+    - given-names: Zhenan
+      family-names: Yin
+    - given-names: Alekhya
+      family-names: Jilla
+    - given-names: Frank
+      family-names: Li
+    - given-names: Theo
+      family-names: Dapamede
+    - given-names: Bardia
+      family-names: Khosravi
+    - given-names: Mohammadreza
+      family-names: Chavoshi
+    - given-names: Judy
+      family-names: Gichoya
+    - given-names: Saptarshi
+      family-names: Purkayastha
+  journal: Medical Image Analysis
+  year: 2026
+  notes: Under review

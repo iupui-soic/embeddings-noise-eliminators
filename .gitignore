@@ -1,32 +1,49 @@
-# Jupyter
+# =============================================================================
+# .gitignore for embeddings-noise-eliminators
+# =============================================================================
+
+# --- Jupyter -----------------------------------------------------------------
 .ipynb_checkpoints/
 **/.ipynb_checkpoints/
 
-# Python
+# Papermill writes executed copies here; do not commit them
+notebooks/.executed/
+
+# --- Python ------------------------------------------------------------------
 __pycache__/
 *.pyc
 *.pyo
+*.egg-info/
+.pytest_cache/
 
-# Data / artifacts (you said files are tiny; adjust if you want some tracked)
-data/
-datasets/
-outputs/
-checkpoints/
-models/
+# --- Local dev environments --------------------------------------------------
+.venv/
+venv/
+env/
+.env
 
-# OS / editors
+# --- OS / editors ------------------------------------------------------------
 .DS_Store
 *.swp
 .vscode/
-.env
+.idea/
 
-# venv + v4 work outputs
-.venv/
-v4_work/
+# --- Data and run-time artifacts ---------------------------------------------
+# Users keep raw radiographs here; we never commit them.
+data/
+datasets/
+checkpoints/
+models/
 
-# Manuscript sources never ship with the repo
+# All run-time outputs (parquets, figures, logs, executed notebooks,
+# DINO-ResNet-50 weights downloaded by scripts/download_dino_resnet50.sh).
+outputs/
+
+# Manuscript LaTeX package — never committed to the public repo.
 manuscript/
-v4/manuscript_v*.md
-v4/manuscript_v*.docx
-v4/fill_placeholders.py
-v4/README.md
+
+# --- Backwards-compat (paths from earlier layouts that no longer exist) ------
+# Keep these so a stale checkout from before the v4-flatten refactor still
+# behaves correctly until the user re-pulls.
+v4_work/
+v4/
