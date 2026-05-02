@@ -88,7 +88,6 @@ battery $\mathcal{B}_\text{CXR}$, all five foundation models score within
 │   ├── smoke_test.py                      # 200-image end-to-end smoke
 │   ├── run_*.sh                           # multi-GPU orchestrators (NIH/MIMIC/sensitivity)
 │   ├── run_chestxdet10_smalllesion.py     # CLI driver for notebook 26's pipeline
-│   ├── download_lidc_idri.py              # LIDC-IDRI bulk downloader (TCIA NBIA API)
 │   ├── assemble_results.sh, merge_gpu_parquets.sh
 │   └── download_dino_resnet50.sh          # auxiliary SSL-CNN weights download
 ├── manifests/                 # reproducibility-frozen data artifacts
