@@ -1,8 +1,7 @@
 cff-version: 1.2.0
 title: >-
   Foundation Model Embeddings Discard Small-Scale Signal in Chest
-  Radiography: A Mechanistic Analysis with Implications for
-  Small-Lesion Detection and Pre-Deployment Audit
+  Radiography: A Mechanistic Analysis of CLS-Aggregation Pooling
 message: >-
   If you use this software, please cite both the article and this
   repository.
@@ -63,13 +62,12 @@ keywords:
   - small-lesion detection
   - embedding probing
   - patch-token pooling
-  - pre-deployment audit
+  - region-aware pooling
 preferred-citation:
   type: article
   title: >-
     Foundation Model Embeddings Discard Small-Scale Signal in Chest
-    Radiography: A Mechanistic Analysis with Implications for
-    Small-Lesion Detection and Pre-Deployment Audit
+    Radiography: A Mechanistic Analysis of CLS-Aggregation Pooling
   authors:
     - given-names: Raajitha
       family-names: Muthyala

@@ -45,7 +45,6 @@ NOTEBOOKS=(
   "16_LabelNoiseSensitivity"
   "17_ADI_vs_DownstreamDelta"
   "18_PatchFootprintTable"
-  "19_SmallLesionStratifiedDelta"
   "20_DinoResNet50_Battery"
   "22_ResNet50_Oracle"
   "23_ResNet50_Baseline"
@@ -53,7 +52,9 @@ NOTEBOOKS=(
   "25_IsoBlur_DeLong"
 )
 
-# notebook 21_VinDr_SmallNodule needs DATASET=vindr; handled separately at end
+# notebook 26_ChestXDet10_SmallLesion_PatchPool runs on its own ChestX-Det10
+# cohort (independent of the DATASET sweep above) and is invoked separately
+# at the end so it always runs once per orchestration call.
 
 if [ "${DATASET}" = "nih" ]; then
   # Skip the MIMIC subsample build for non-MIMIC runs
@@ -84,19 +85,20 @@ for nb in "${NOTEBOOKS[@]}"; do
             2>&1 | tee "${log}"
 done
 
-# VinDr-CXR confirmatory cohort (special-case DATASET)
+# ChestX-Det10 small-lesion bbox-stratified analysis (own cohort).
+# Runs once per orchestration call; data lives at /data0/chestx-det10/.
 echo "=========================================================="
-echo "[papermill] 21_VinDr_SmallNodule  DATASET=vindr"
+echo "[papermill] 26_ChestXDet10_SmallLesion_PatchPool  DATASET=chestxdet10"
 echo "=========================================================="
-papermill notebooks/21_VinDr_SmallNodule.ipynb \
-          "${OUTPUTS_DIR}/papermill/21_VinDr_SmallNodule__vindr.ipynb" \
-          -p DATASET vindr \
-          -p MODELS "raddino,dinov3" \
+papermill notebooks/26_ChestXDet10_SmallLesion_PatchPool.ipynb \
+          "${OUTPUTS_DIR}/papermill/26_ChestXDet10_SmallLesion_PatchPool__chestxdet10.ipynb" \
+          -p DATASET chestxdet10 \
+          -p MODELS "${MODELS}" \
           -p SEED "${SEED}" \
           -p OUTPUTS_DIR "${OUTPUTS_DIR}" \
           -p REPO_ROOT_OVERRIDE "${REPO_ROOT}" \
           --log-output --log-level INFO \
-          2>&1 | tee "${OUTPUTS_DIR}/logs/21_VinDr_SmallNodule__vindr.log"
+          2>&1 | tee "${OUTPUTS_DIR}/logs/26_ChestXDet10_SmallLesion_PatchPool__chestxdet10.log"
 
 echo ""
 echo "All notebooks completed. Result parquets are in:"

@@ -30,6 +30,7 @@ from .probing import train_probe, save_probe, load_probe_result, ProbeResult
 # Torch-dependent import is optional
 try:
     from .embedding_utils import EmbeddingExtractor
+    from .bbox_pool import extract_all_bbox, random_negative_bbox
 except ImportError as _e:  # torch not installed - analysis-only machine
     import warnings as _w
     _w.warn(
@@ -38,3 +39,5 @@ except ImportError as _e:  # torch not installed - analysis-only machine
         "This is fine for statistics/plotting notebooks."
     )
     EmbeddingExtractor = None  # type: ignore
+    extract_all_bbox = None  # type: ignore
+    random_negative_bbox = None  # type: ignore

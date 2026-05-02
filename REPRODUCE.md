@@ -16,7 +16,7 @@ The full pipeline was developed and tested on:
 | Python | 3.10 | 3.9–3.12 should work |
 | GPU | NVIDIA RTX 6000 Ada (48 GB) | DINOv3 ViT-7B requires ≥40 GB VRAM at fp16; smaller models fit on ≥16 GB |
 | RAM | 64 GB | 32 GB is enough for analysis-only; embedding extraction is memory-light per image |
-| Disk | 500 GB free | NIH ≈ 45 GB, MIMIC ≈ 470 GB, VinDr ≈ 80 GB; outputs ≈ 30 GB |
+| Disk | 500 GB free | NIH ≈ 45 GB, MIMIC ≈ 470 GB, ChestX-Det10 ≈ 1.4 GB; outputs ≈ 30 GB |
 
 A multi-GPU machine cuts wall-time roughly in half via the `scripts/run_*_gpu0.sh`
 / `_gpu1.sh` pair. Single-GPU runs use the unified `scripts/run_*.sh`.
@@ -85,15 +85,35 @@ papermill notebooks/00_BuildMimicSubsample.ipynb \
           -p OUT_PATH manifests/mimic_subsample_ids.parquet
 ```
 
-### VinDr-CXR (PhysioNet credentialed)
+### ChestX-Det10 (public)
+
+ChestX-Det10 \[Liu et al. 2020\] is a 3,543-image bbox-annotated subset of
+NIH-CXR14, used in notebook 26 for the natural-lesion bbox-stratified
+analysis. Annotation JSON files are mirrored from the GitHub repository;
+images come from the Deepwise mirror.
 
 ```bash
-# https://physionet.org/content/vindr-cxr/1.0.0/
-# Expected layout:
-#   /data0/VinDr-CXR/train/<study_id>.dicom
-#   /data0/VinDr-CXR/test/<study_id>.dicom
-#   /data0/VinDr-CXR/annotations/image_labels_train.csv
-#   /data0/VinDr-CXR/annotations/annotations_test.csv
+mkdir -p /data0/chestx-det10
+cd /data0/chestx-det10
+
+# Annotations (~470 KB)
+curl -fL -o train.json https://raw.githubusercontent.com/Deepwise-AILab/ChestX-Det10-Dataset/master/train.json
+curl -fL -o test.json  https://raw.githubusercontent.com/Deepwise-AILab/ChestX-Det10-Dataset/master/test.json
+
+# Images (~1.4 GB total; train zip 1.21 GB + test zip 218 MB)
+curl -fL -o train_data.zip http://resource.deepwise.com/xraychallenge/train_data.zip
+curl -fL -o test_data.zip  http://resource.deepwise.com/xraychallenge/test_data.zip
+mkdir -p images
+python -c "
+import zipfile
+for z in ('train_data.zip', 'test_data.zip'):
+    with zipfile.ZipFile(z) as zf: zf.extractall('images')
+"
+
+# The Deepwise zip extracts to images/train-old/ and images/test_data/.
+# Notebook 26 expects images_train and images_test symlinks:
+ln -sfT images/train-old  images_train
+ln -sfT images/test_data  images_test
 ```
 
 ### Emory CXR (institutional, restricted)
@@ -101,7 +121,7 @@ papermill notebooks/00_BuildMimicSubsample.ipynb \
 Emory CXR is institutional. Reproduction of the Emory-specific rows requires
 access to the on-premises PHI-compatible Emory infrastructure under the IRB
 protocol cited in the manuscript. The remainder of the pipeline runs end-to-end
-on NIH + MIMIC + VinDr alone.
+on NIH + MIMIC + ChestX-Det10 alone.
 
 ## 4. Auxiliary model weights
 
@@ -154,13 +174,12 @@ Approximate wall-times are for a single RTX 6000 Ada at the released splits.
 | 8 | `08_DirectionalMotionBlur` | 8 hours | `…/exp08_directional_blur/exp08_<DS>_directional_blur.parquet` |
 | 9 | `09_Combined_Analysis_Stats` | 5 min | DeLong + BH-FDR aggregates |
 | 10–18 | sensitivity analyses (lightweight) | 15 min each | `outputs/v4_exp{10..18}_*` |
-| 19 | `19_SmallLesionStratifiedDelta` | 20 min | NIH BBox stratified ΔAUC |
 | 20 | `20_DinoResNet50_Battery` | 90 min | DINO-ResNet-50 architectural control rows |
-| 21 | `21_VinDr_SmallNodule` (DATASET=vindr) | 60 min | VinDr stratified replication |
 | 22 | `22_ResNet50_Oracle` | 30 min | 32×32 oracle pixel positive control |
 | 23 | `23_ResNet50_Baseline` | 25 min | whole-image ResNet-50 reticular + ground-glass |
 | 24 | `24_ResNet50_GlobalIsoDir` | 30 min | whole-image ResNet-50 iso + directional |
 | 25 | `25_IsoBlur_DeLong` | 5 min | paired DeLong RAD-DINO vs DINOv3 |
+| 26 | `26_ChestXDet10_SmallLesion_PatchPool` (own cohort) | 60 min | ChestX-Det10 image-level + bbox region-aware patch-pool |
 
 Three execution patterns:
 
@@ -227,7 +246,7 @@ pdflatex supplementary.tex
 
 ## 8. Expected outputs
 
-After a complete run on NIH + MIMIC + VinDr:
+After a complete run on NIH + MIMIC + ChestX-Det10:
 
 ```
 outputs/
@@ -253,8 +272,10 @@ outputs/
 ├── v4_exp16_label_noise/
 ├── v4_exp17_adi_vs_delta/
 ├── v4_exp18_patch_footprint/
-├── v4_exp19_small_lesion_strata/    (NIH BBox stratified ΔAUC)
-├── v4_exp_vindr_smallnodule/        (VinDr confirmatory)
+├── v4_exp_chestxdet10/              (ChestX-Det10 image-level + bbox region-aware patch-pool)
+│   ├── cache/<model>_image_pools.npz   (per-FM image-level CLS+patch_mean cache)
+│   ├── image_level_results.parquet
+│   └── bbox_level_results.parquet
 ├── papermill/                       (executed notebook copies)
 └── logs/                            (per-notebook stdout/stderr)
 ```
@@ -273,9 +294,8 @@ Each manuscript table is built from these specific parquet files:
 | Table 6 (three-pooling) | `…/exp06_patch_probing/*.parquet` |
 | Table 7 (raw-pixel baselines) | `…/exp07_rawpixel_baseline/*.parquet` |
 | Table 9 (clean-vs-perturbed) | `…/exp04_clean_vs_perturbed/*.parquet` |
-| Table 11 (NIH BBox stratified) | `outputs/v4_exp19_small_lesion_strata/*.parquet` |
-| Table 12 (VinDr stratified) | `outputs/v4_exp_vindr_smallnodule/*.parquet` |
 | Table 13 (SFDI) | derived in `09_Combined_Analysis_Stats.ipynb` from exp06 CLS rows |
+| §7 ChestX-Det10 (bbox-level recovery + size-stratified gap) | `outputs/v4_exp_chestxdet10/{image,bbox}_level_results.parquet` |
 
 `fill_placeholders.py` automates this mapping; the manuscript is the single
 source of truth for which token reads from which parquet column.
